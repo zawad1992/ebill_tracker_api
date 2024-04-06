@@ -19,12 +19,10 @@ class CheckLastActivity
         if (auth()->check() && auth()->user()->last_activity) {
             $lastActivity = auth()->user()->last_activity;
             $inactiveTime = now()->diffInDays($lastActivity);
-    
             if ($inactiveTime > 30) {
                 $request->user()->currentAccessToken()->delete();
                 return response()->json(['message' => 'You have been logged out due to inactivity.'], 401);
             }
-
             if($lastActivity < now()->format('Y-m-d')) {
                 auth()->user()->update(['last_activity' => now()->format('Y-m-d')]);
             }
