@@ -42,6 +42,8 @@ Route::post('/user/authenticate', function (Request $request) {
             'email' => ['The provided credentials are incorrect.'],
         ]);
     }
+    $user->update(['last_activity' => now()->format('Y-m-d')]);
+    
     return $user->createToken($request->device_name)->plainTextToken;
 });
 
